@@ -1,12 +1,14 @@
-import firebase from '../firebase';
-import AppRouter from './Router';
-
-console.log(firebase);
+import { useState } from 'react';
+import { authService } from 'FB_Instance';
+import AppRouter from 'components/Router';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(authService.currentUser);
+
   return (
     <div>
-      <AppRouter />
+      <AppRouter isLoggedIn={isLoggedIn} />
+      <footer>&copy; Nwitter {new Date().getFullYear()}</footer>
     </div>
   );
 }
