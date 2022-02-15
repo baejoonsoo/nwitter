@@ -7,6 +7,7 @@ function App() {
 
   return (
     <div>
+      <h1>{}</h1>
       <AppRouter isLoggedIn={isLoggedIn} />
       <footer>&copy; Nwitter {new Date().getFullYear()}</footer>
     </div>
