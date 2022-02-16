@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { authService, Auth_State_Changed } from 'FB_Instance';
+import { Auth_State_Changed } from 'FB_Instance';
 import AppRouter from 'components/Router';
 
 function App() {

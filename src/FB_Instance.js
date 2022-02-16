@@ -4,6 +4,9 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
+  GoogleAuthProvider,
+  GithubAuthProvider,
+  signInWithPopup,
 } from 'firebase/auth';
 
 const firebaseConfig = {
@@ -27,4 +30,12 @@ export const signIn_Whth_Email = async (email, password) => {
 
 export const Auth_State_Changed = (func) => {
   onAuthStateChanged(authService, func);
+};
+
+export const googleProvider = () => new GoogleAuthProvider();
+
+export const githubProvider = () => new GithubAuthProvider();
+
+export const signIn_popup = async (provider) => {
+  return await signInWithPopup(authService, provider);
 };

@@ -1,9 +1,16 @@
-import { create_Email_Login, signIn_Whth_Email } from 'FB_Instance';
+import {
+  create_Email_Login,
+  githubProvider,
+  googleProvider,
+  signIn_popup,
+  signIn_Whth_Email,
+} from 'FB_Instance';
 import { useState } from 'react';
 
 const Auth = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [newAccount, setNewAccount] = useState(true);
+  const [error, setError] = useState('');
 
   const onChangeForm = (event) => {
     const { value, name } = event.target;
@@ -22,9 +29,25 @@ const Auth = () => {
       }
       console.log(data);
     } catch (error) {
-      console.log(error);
+      setError(error.message);
     }
   };
+
+  const toggleAccount = () => setNewAccount((prev) => !prev);
+
+  const onSocialClick = async ({ target: { name } }) => {
+    let provider;
+
+    if (name === 'google') {
+      provider = googleProvider();
+    } else if (name === 'github') {
+      provider = githubProvider();
+    }
+
+    const data = await signIn_popup(provider);
+    console.log(data);
+  };
+
   return (
     <div>
       <form onSubmit={onSubmit}>
@@ -46,9 +69,16 @@ const Auth = () => {
         />
         <input type="submit" value={newAccount ? 'Create Account' : 'Login'} />
       </form>
+      <span onClick={toggleAccount}>
+        {newAccount ? 'Login' : 'Create Account'}
+      </span>
       <div>
-        <button>Continue with Google</button>
-        <button>Continue with Github</button>
+        <button name="google" onClick={onSocialClick}>
+          Continue with Google
+        </button>
+        <button name="github" onClick={onSocialClick}>
+          Continue with Github
+        </button>
       </div>
     </div>
   );
