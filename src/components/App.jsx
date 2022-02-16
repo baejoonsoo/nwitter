@@ -1,14 +1,24 @@
-import { useState } from 'react';
-import { authService } from 'FB_Instance';
+import { useEffect, useState } from 'react';
+import { authService, Auth_State_Changed } from 'FB_Instance';
 import AppRouter from 'components/Router';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(authService.currentUser);
+  const [init, setInit] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  useEffect(() => {
+    Auth_State_Changed((user) => {
+      if (user) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+      setInit(true);
+    });
+  }, []);
   return (
     <div>
-      <h1>{}</h1>
-      <AppRouter isLoggedIn={isLoggedIn} />
+      {init ? <AppRouter isLoggedIn={isLoggedIn} /> : 'initializing...'}
       <footer>&copy; Nwitter {new Date().getFullYear()}</footer>
     </div>
   );

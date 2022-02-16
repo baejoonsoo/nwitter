@@ -3,6 +3,7 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  onAuthStateChanged,
 } from 'firebase/auth';
 
 const firebaseConfig = {
@@ -14,7 +15,7 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_APP_ID,
 };
 
-const app = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 export const authService = getAuth();
 
 export const create_Email_Login = async (email, password) => {
@@ -22,4 +23,8 @@ export const create_Email_Login = async (email, password) => {
 };
 export const signIn_Whth_Email = async (email, password) => {
   return await signInWithEmailAndPassword(authService, email, password);
+};
+
+export const Auth_State_Changed = (func) => {
+  onAuthStateChanged(authService, func);
 };
