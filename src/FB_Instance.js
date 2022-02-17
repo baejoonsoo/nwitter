@@ -12,7 +12,9 @@ import {
 import {
   addDoc,
   collection,
+  getDocs,
   getFirestore,
+  query,
   serverTimestamp,
 } from 'firebase/firestore';
 
@@ -56,4 +58,9 @@ export const addNweet = async (nweet) => {
     nweet,
     createAt: serverTimestamp(),
   });
+};
+
+export const get_nweets = async () => {
+  const dbQuery = await query(collection(dbService, 'nweets'));
+  return await getDocs(dbQuery);
 };
