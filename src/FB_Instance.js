@@ -9,6 +9,12 @@ import {
   signInWithPopup,
   signOut,
 } from 'firebase/auth';
+import {
+  addDoc,
+  collection,
+  getFirestore,
+  serverTimestamp,
+} from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -42,3 +48,12 @@ export const signIn_popup = async (provider) => {
 };
 
 export const logOut = () => signOut(authService);
+
+export const dbService = getFirestore();
+
+export const addNweet = async (nweet) => {
+  await addDoc(collection(dbService, 'nweets'), {
+    nweet,
+    createAt: serverTimestamp(),
+  });
+};
