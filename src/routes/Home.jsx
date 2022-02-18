@@ -1,10 +1,12 @@
 import Nweet from 'components/Nweet';
 import { addNweet, onSnapShot } from 'FB_Instance';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const Home = ({ userObj }) => {
   const [newNweet, setNewNweet] = useState('');
   const [nweets, setNweets] = useState([]);
+  const [attachment, setAttachment] = useState(null);
+  const fileInput = useRef();
 
   useEffect(() => {
     onSnapShot((snapshot) => {
@@ -29,10 +31,20 @@ const Home = ({ userObj }) => {
     const theFile = files[0];
     const reader = new FileReader();
     reader.onloadend = (finishedEvent) => {
-      console.log(finishedEvent);
+      const {
+        currentTarget: { result },
+      } = finishedEvent;
+
+      setAttachment(result);
     };
     reader.readAsDataURL(theFile);
   };
+
+  const onClearAttachment = () => {
+    setAttachment(null);
+    fileInput.current.value = null;
+  };
+
   return (
     <div>
       <form onSubmit={onSubmit}>
@@ -43,8 +55,19 @@ const Home = ({ userObj }) => {
           placeholder="what'on your mind?"
           maxLength={120}
         />
-        <input type="file" accept="image/*" onChange={onFileChange} />
+        <input
+          type="file"
+          accept="image/*"
+          ref={fileInput}
+          onChange={onFileChange}
+        />
         <button>Nweet</button>
+        {attachment && (
+          <div>
+            <img src={attachment} width="50px" height="50px" alt="preview" />
+            <button onClick={onClearAttachment}>clear</button>
+          </div>
+        )}
       </form>
       <div>
         {nweets.map((nweet) => (
