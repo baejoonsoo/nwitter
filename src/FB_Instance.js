@@ -12,6 +12,8 @@ import {
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
   getDocs,
   getFirestore,
   onSnapshot,
@@ -75,3 +77,7 @@ export const onSnapShot = (func) => {
   );
   onSnapshot(dbQuery, func);
 };
+
+const NweetTextRef = (nweetId) => doc(dbService, 'nweets', `${nweetId}`);
+
+export const deleteNweet = (nweetId) => deleteDoc(NweetTextRef(nweetId));
