@@ -15,6 +15,7 @@ import {
   getDocs,
   getFirestore,
   onSnapshot,
+  orderBy,
   query,
   serverTimestamp,
 } from 'firebase/firestore';
@@ -67,9 +68,10 @@ export const get_nweets = async () => {
   return await getDocs(dbQuery);
 };
 
-export const onSnapShot = () => {
-  const dbQuery = query(collection(dbService, 'nweets'));
-  onSnapshot(dbQuery, (snapshot) => {
-    console.log('something happened');
-  });
+export const onSnapShot = (func) => {
+  const dbQuery = query(
+    collection(dbService, 'nweets'),
+    orderBy('createAt', 'desc'),
+  );
+  onSnapshot(dbQuery, func);
 };

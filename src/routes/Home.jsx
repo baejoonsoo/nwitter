@@ -1,24 +1,18 @@
-import { addNweet, get_nweets, onSnapShot } from 'FB_Instance';
+import { addNweet, onSnapShot } from 'FB_Instance';
 import { useEffect, useState } from 'react';
 
 const Home = ({ userObj }) => {
   const [newNweet, setNewNweet] = useState('');
   const [nweets, setNweets] = useState([]);
 
-  const getNweets = async () => {
-    const dbNweet = await get_nweets();
-    dbNweet.forEach((document) => {
-      const nweetObject = {
-        ...document.data(),
-        id: document.id,
-      };
-
-      setNweets((prev) => [nweetObject, ...prev]);
-    });
-  };
   useEffect(() => {
-    getNweets();
-    onSnapShot();
+    onSnapShot((snapshot) => {
+      const nweetArray = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setNweets(nweetArray);
+    });
   }, []);
 
   const onSubmit = async (event) => {
