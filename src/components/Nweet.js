@@ -1,7 +1,11 @@
-import { deleteNweet } from 'FB_Instance';
+import { deleteNweet, editNweet } from 'FB_Instance';
+import { useState } from 'react';
 import Swal from 'sweetalert2';
 
 const Nweet = ({ nweetObj, isOwner }) => {
+  const [editing, setEditing] = useState(false);
+  const [newNweet, setNewNweet] = useState(nweetObj.text);
+
   const onDeleteClick = () => {
     Swal.fire({
       text: 'Are you sure you want to delete this nweet?',
@@ -18,13 +22,41 @@ const Nweet = ({ nweetObj, isOwner }) => {
       }
     });
   };
+
+  const toggleEditing = () => setEditing((prev) => !prev);
+
+  const onChangeNweet = ({ target: { value } }) => setNewNweet(value);
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+    editNweet(nweetObj.id, newNweet);
+    setEditing(false);
+  };
   return (
     <div>
-      <h4>{nweetObj.text}</h4>
-      {isOwner && (
+      {editing ? (
         <>
-          <button onClick={onDeleteClick}>Delete Nweet</button>
-          <button>Edit Nweet</button>
+          <form onSubmit={onSubmit}>
+            <input
+              type="text"
+              placeholder="edit your nweet"
+              value={newNweet}
+              onChange={onChangeNweet}
+              required
+            />
+            <button>update Nweet</button>
+          </form>
+          <button onClick={toggleEditing}>Calcel</button>
+        </>
+      ) : (
+        <>
+          <h4>{nweetObj.text}</h4>
+          {isOwner && (
+            <>
+              <button onClick={onDeleteClick}>Delete Nweet</button>
+              <button onClick={toggleEditing}>Edit Nweet</button>
+            </>
+          )}
         </>
       )}
     </div>

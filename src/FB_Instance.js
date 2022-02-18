@@ -20,6 +20,7 @@ import {
   orderBy,
   query,
   serverTimestamp,
+  updateDoc,
 } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -81,3 +82,8 @@ export const onSnapShot = (func) => {
 const NweetTextRef = (nweetId) => doc(dbService, 'nweets', `${nweetId}`);
 
 export const deleteNweet = (nweetId) => deleteDoc(NweetTextRef(nweetId));
+
+export const editNweet = (nweetId, newNweet) =>
+  updateDoc(NweetTextRef(nweetId), {
+    text: newNweet,
+  });
