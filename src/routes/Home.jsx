@@ -1,6 +1,7 @@
 import Nweet from 'components/Nweet';
-import { addNweet, onSnapShot } from 'FB_Instance';
+import { addNweet, attachmentUploadString, onSnapShot } from 'FB_Instance';
 import { useEffect, useRef, useState } from 'react';
+import { v4 } from 'uuid';
 
 const Home = ({ userObj }) => {
   const [newNweet, setNewNweet] = useState('');
@@ -20,8 +21,13 @@ const Home = ({ userObj }) => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    await addNweet(newNweet, userObj.uid);
-    setNewNweet('');
+    const response = await attachmentUploadString(
+      attachment,
+      `${userObj.uid}/${v4()}`,
+    );
+    console.log(response);
+    // await addNweet(newNweet, userObj.uid);
+    // setNewNweet('');
   };
   const onChange = ({ target: { value } }) => {
     setNewNweet(value);

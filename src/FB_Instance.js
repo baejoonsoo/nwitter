@@ -22,6 +22,7 @@ import {
   serverTimestamp,
   updateDoc,
 } from 'firebase/firestore';
+import { getStorage, ref, uploadString } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -87,3 +88,10 @@ export const editNweet = (nweetId, newNweet) =>
   updateDoc(NweetTextRef(nweetId), {
     text: newNweet,
   });
+
+export const storageService = getStorage();
+
+const fileRef = (data_url) => ref(storageService, data_url);
+
+export const attachmentUploadString = async (attachment, data_url) =>
+  await uploadString(fileRef(data_url), attachment, 'data_url');
