@@ -1,7 +1,7 @@
-import { addNweet, get_nweets } from 'FB_Instance';
+import { addNweet, get_nweets, onSnapShot } from 'FB_Instance';
 import { useEffect, useState } from 'react';
 
-const Home = () => {
+const Home = ({ userObj }) => {
   const [newNweet, setNewNweet] = useState('');
   const [nweets, setNweets] = useState([]);
 
@@ -18,11 +18,12 @@ const Home = () => {
   };
   useEffect(() => {
     getNweets();
+    onSnapShot();
   }, []);
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    await addNweet(newNweet);
+    await addNweet(newNweet, userObj.uid);
     setNewNweet('');
   };
   const onChange = ({ target: { value } }) => {
@@ -43,7 +44,7 @@ const Home = () => {
       <div>
         {nweets.map((nweet) => (
           <div key={nweet.id}>
-            <h4>{nweet.nweet}</h4>
+            <h4>{nweet.text}</h4>
           </div>
         ))}
       </div>

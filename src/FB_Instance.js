@@ -14,6 +14,7 @@ import {
   collection,
   getDocs,
   getFirestore,
+  onSnapshot,
   query,
   serverTimestamp,
 } from 'firebase/firestore';
@@ -53,14 +54,22 @@ export const logOut = () => signOut(authService);
 
 export const dbService = getFirestore();
 
-export const addNweet = async (nweet) => {
+export const addNweet = async (nweet, uid) => {
   await addDoc(collection(dbService, 'nweets'), {
-    nweet,
+    text: nweet,
     createAt: serverTimestamp(),
+    creatorId: uid,
   });
 };
 
 export const get_nweets = async () => {
-  const dbQuery = await query(collection(dbService, 'nweets'));
+  const dbQuery = query(collection(dbService, 'nweets'));
   return await getDocs(dbQuery);
+};
+
+export const onSnapShot = () => {
+  const dbQuery = query(collection(dbService, 'nweets'));
+  onSnapshot(dbQuery, (snapshot) => {
+    console.log('something happened');
+  });
 };
