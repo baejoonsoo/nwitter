@@ -1,11 +1,12 @@
 import AuthForm from 'components/AuthForm';
+import { githubProvider, googleProvider, signIn_popup } from 'FB_Instance';
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  create_Email_Login,
-  githubProvider,
-  googleProvider,
-  signIn_popup,
-  signIn_Whth_Email,
-} from 'FB_Instance';
+  faTwitter,
+  faGoogle,
+  faGithub,
+} from '@fortawesome/free-brands-svg-icons';
 
 const Auth = () => {
   const onSocialClick = async ({ target: { name } }) => {
@@ -22,14 +23,22 @@ const Auth = () => {
   };
 
   return (
-    <div>
+    <div className="authContainer">
+      <FontAwesomeIcon
+        icon={faTwitter}
+        color={'#04AAFF'}
+        size="3x"
+        style={{ marginBottom: 30 }}
+      />
       <AuthForm />
-      <div>
-        <button name="google" onClick={onSocialClick}>
+      <div className="authBtns">
+        <button name="google" onClick={onSocialClick} className="authBtn">
           Continue with Google
+          <FontAwesomeIcon icon={faGoogle} />
         </button>
-        <button name="github" onClick={onSocialClick}>
+        <button name="github" onClick={onSocialClick} className="authBtn">
           Continue with Github
+          <FontAwesomeIcon icon={faGithub} />
         </button>
       </div>
     </div>
