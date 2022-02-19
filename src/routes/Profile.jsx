@@ -2,7 +2,7 @@ import { getMyNweets, logOut, updateProfileName } from 'FB_Instance';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Profile = ({ userObj }) => {
+const Profile = ({ refreshUser, userObj }) => {
   const navigate = useNavigate();
   const onLogOutClick = () => {
     logOut();
@@ -26,11 +26,12 @@ const Profile = ({ userObj }) => {
     setNewDisplayName(value);
   };
 
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
 
     if (userObj.displayName !== newDisplayName) {
-      updateProfileName(userObj, { displayName: newDisplayName });
+      await updateProfileName(userObj, { displayName: newDisplayName });
+      refreshUser();
     }
   };
 
