@@ -1,4 +1,4 @@
-import { deleteNweet, editNweet } from 'FB_Instance';
+import { deleteAttachment, deleteNweet, editNweet } from 'FB_Instance';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 
@@ -19,6 +19,7 @@ const Nweet = ({ nweetObj, isOwner }) => {
     }).then((res) => {
       if (res.isConfirmed) {
         deleteNweet(nweetObj.id);
+        deleteAttachment(nweetObj.attachmentURL);
       }
     });
   };

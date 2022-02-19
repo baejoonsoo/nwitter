@@ -23,6 +23,7 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import {
+  deleteObject,
   getDownloadURL,
   getStorage,
   ref,
@@ -70,6 +71,10 @@ export const addNweet = async (nweet, uid) => {
     createAt: serverTimestamp(),
     creatorId: uid,
   });
+};
+
+export const deleteAttachment = async (attachmentURL) => {
+  await deleteObject(ref(storageService, attachmentURL));
 };
 
 export const get_nweets = async () => {
