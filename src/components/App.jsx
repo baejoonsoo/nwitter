@@ -11,7 +11,10 @@ function App() {
     Auth_State_Changed((user) => {
       if (user) {
         setUserObj(user);
+      } else {
+        setUserObj(null);
       }
+
       setInit(true);
     });
   }, []);
