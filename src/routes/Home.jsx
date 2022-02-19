@@ -1,12 +1,17 @@
 import Nweet from 'components/Nweet';
-import { addNweet, attachmentUploadString, onSnapShot } from 'FB_Instance';
+import {
+  addNweet,
+  attachmentUploadString,
+  GetDownloadURL,
+  onSnapShot,
+} from 'FB_Instance';
 import { useEffect, useRef, useState } from 'react';
 import { v4 } from 'uuid';
 
 const Home = ({ userObj }) => {
   const [newNweet, setNewNweet] = useState('');
   const [nweets, setNweets] = useState([]);
-  const [attachment, setAttachment] = useState(null);
+  const [attachment, setAttachment] = useState('');
   const fileInput = useRef();
 
   useEffect(() => {
@@ -21,14 +26,28 @@ const Home = ({ userObj }) => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    const response = await attachmentUploadString(
-      attachment,
-      `${userObj.uid}/${v4()}`,
-    );
-    console.log(response);
-    // await addNweet(newNweet, userObj.uid);
-    // setNewNweet('');
+
+    let attachmentURL = '';
+
+    if (attachment !== '') {
+      const response = await attachmentUploadString(
+        attachment,
+        `${userObj.uid}/${v4()}`,
+      );
+      attachmentURL = await GetDownloadURL(response.ref);
+    }
+
+    const nweet = {
+      text: newNweet,
+      attachmentURL,
+    };
+    await addNweet(nweet, userObj.uid);
+
+    setNewNweet('');
+    setAttachment('');
+    fileInput.current.value = null;
   };
+
   const onChange = ({ target: { value } }) => {
     setNewNweet(value);
   };

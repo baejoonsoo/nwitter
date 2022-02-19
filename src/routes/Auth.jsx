@@ -28,8 +28,8 @@ const Auth = () => {
         data = await signIn_Whth_Email(formData.email, formData.password);
       }
       console.log(data);
-    } catch (error) {
-      setError(error.message);
+    } catch (err) {
+      setError(err.message);
     }
   };
 
