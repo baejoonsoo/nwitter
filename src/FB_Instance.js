@@ -8,6 +8,7 @@ import {
   GithubAuthProvider,
   signInWithPopup,
   signOut,
+  updateProfile,
 } from 'firebase/auth';
 import {
   addDoc,
@@ -117,3 +118,6 @@ export const getMyNweets = async (uid) => {
 
   return await getDocs(Query);
 };
+
+export const updateProfileName = async (userObj, newProfile) =>
+  await updateProfile(userObj, newProfile);

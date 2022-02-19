@@ -1,5 +1,5 @@
-import { getMyNweets, logOut } from 'FB_Instance';
-import { useEffect } from 'react';
+import { getMyNweets, logOut, updateProfileName } from 'FB_Instance';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Profile = ({ userObj }) => {
@@ -8,6 +8,10 @@ const Profile = ({ userObj }) => {
     logOut();
     navigate('/');
   };
+
+  const [newDisplayName, setNewDisplayName] = useState(
+    userObj.displayName ?? 'User',
+  );
 
   const getMyNweet = async () => {
     const querySnapshot = await getMyNweets(userObj.uid);
@@ -18,8 +22,29 @@ const Profile = ({ userObj }) => {
     getMyNweet();
   }, []);
 
+  const onChangeDisplayName = ({ target: { value } }) => {
+    setNewDisplayName(value);
+  };
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+
+    if (userObj.displayName !== newDisplayName) {
+      updateProfileName(userObj, { displayName: newDisplayName });
+    }
+  };
+
   return (
     <>
+      <form onSubmit={onSubmit}>
+        <input
+          placeholder="Display name"
+          type="text"
+          onChange={onChangeDisplayName}
+          value={newDisplayName}
+        />
+        <button>Update Profile</button>
+      </form>
       <button onClick={onLogOutClick}>Log out</button>
     </>
   );
