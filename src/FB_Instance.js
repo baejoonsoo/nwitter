@@ -21,6 +21,7 @@ import {
   query,
   serverTimestamp,
   updateDoc,
+  where,
 } from 'firebase/firestore';
 import {
   deleteObject,
@@ -107,3 +108,12 @@ export const attachmentUploadString = async (attachment, data_url) =>
   await uploadString(attachmentRef(data_url), attachment, 'data_url');
 
 export const GetDownloadURL = async (ref) => await getDownloadURL(ref);
+
+export const getMyNweets = async (uid) => {
+  const Query = query(
+    collection(dbService, 'nweets'),
+    where('creatorId', '==', uid),
+  );
+
+  return await getDocs(Query);
+};
